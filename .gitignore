@@ -1,0 +1,12 @@
+node_modules/
+.DS_Store
+Thumbs.db
+*.log
+*.zip
+tmp/
+output/
+package/
+deliverables/
+.env
+.env.*
+!.env.example

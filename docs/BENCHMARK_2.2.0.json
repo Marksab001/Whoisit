@@ -1,0 +1,12 @@
+{
+  "version": "2.2.0",
+  "date": "2026-09-30",
+  "runtime": "v24.19.0",
+  "platform": "linux/x64",
+  "algorithm": "normalized Set comparison (expected O(n + m))",
+  "cases": [
+    { "size": 1000, "iterations": 15, "medianMs": 0.68, "minMs": 0.44, "maxMs": 1.78, "output": { "notFollowingBack": 500, "notFollowedBack": 500, "mutuals": 500 } },
+    { "size": 10000, "iterations": 10, "medianMs": 7.21, "minMs": 4.86, "maxMs": 11.24, "output": { "notFollowingBack": 5000, "notFollowedBack": 5000, "mutuals": 5000 } },
+    { "size": 100000, "iterations": 5, "medianMs": 85.04, "minMs": 76.02, "maxMs": 118.81, "output": { "notFollowingBack": 50000, "notFollowedBack": 50000, "mutuals": 50000 } }
+  ]
+}

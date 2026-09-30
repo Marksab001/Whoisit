@@ -1,0 +1,15 @@
+{
+  "name": "whoisit",
+  "version": "2.2.0",
+  "private": true,
+  "description": "Privacy-first Instagram relationship checker",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "build": "node scripts/sync-dashboard.mjs",
+    "check": "node scripts/check.mjs",
+    "test": "node --test tests/*.test.js",
+    "benchmark": "node scripts/benchmark.mjs",
+    "serve": "node scripts/serve.mjs"
+  },
+  "license": "MIT"
+}

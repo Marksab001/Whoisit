@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="whoisit is a private, local Instagram follower and following comparison tool.">
+  <meta name="color-scheme" content="light dark">
+  <title>whoisit — Instagram Relationship Checker</title>
+  <link rel="icon" href="assets/whoisit-logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#mainContent">Skip to content</a>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="whoisit home">
+      <img class="brand-logo" src="assets/whoisit-logo.svg" alt="" width="40" height="40">
+      <span><strong>whoisit</strong><small>Instagram Relationship Checker</small></span>
+    </a>
+    <div class="topbar-actions">
+      <span class="privacy-chip"><span class="status-dot status-dot--safe"></span>Local processing</span>
+      <button id="themeToggle" class="theme-toggle" type="button" aria-label="Switch to dark theme" aria-pressed="false"><span aria-hidden="true">◐</span><span id="themeToggleText">Dark</span></button>
+      <a class="text-link" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">Open Instagram <span aria-hidden="true">↗</span></a>
+    </div>
+  </header>
+
+  <main id="mainContent" class="app-shell">
+    <section class="hero">
+      <div class="hero-copy">
+        <span class="eyebrow">PRIVATE BY DESIGN</span>
+        <h1>Understand your Instagram connections.</h1>
+        <p>Compare followers and following without handing your password or session cookie to a third-party server.</p>
+      </div>
+      <div class="trust-row" aria-label="Privacy features">
+        <span>✓ No password</span><span>✓ No cookie upload</span><span>✓ CSV + JSON export</span>
+      </div>
+    </section>
+
+    <div class="workspace">
+      <aside class="control-column">
+        <section class="panel setup-panel" aria-labelledby="setupTitle">
+          <div class="panel-heading">
+            <div><span class="section-number">01</span><h2 id="setupTitle">Choose scan method</h2></div>
+            <span id="connectionBadge" class="connection-badge" data-state="offline">Extension offline</span>
+          </div>
+
+          <div class="mode-switch" role="tablist" aria-label="Scan method">
+            <button id="liveModeButton" class="mode-button is-active" role="tab" aria-selected="true" aria-controls="liveModePanel" data-mode="live">
+              <span class="mode-icon" aria-hidden="true">◎</span><span><strong>Live scan</strong><small>Browser extension</small></span>
+            </button>
+            <button id="fileModeButton" class="mode-button" role="tab" aria-selected="false" aria-controls="fileModePanel" data-mode="file">
+              <span class="mode-icon" aria-hidden="true">⇩</span><span><strong>Data export</strong><small>Official JSON files</small></span>
+            </button>
+          </div>
+
+          <div id="liveModePanel" class="mode-panel" role="tabpanel" aria-labelledby="liveModeButton">
+            <div class="connection-card">
+              <div class="connection-copy">
+                <span id="connectionIcon" class="connection-icon" aria-hidden="true">!</span>
+                <div><strong id="connectionTitle">Connect the extension</strong><p id="connectionText">Open Instagram in another tab, sign in, then check the connection.</p></div>
+              </div>
+              <button id="connectButton" class="button button--secondary" type="button">Check connection</button>
+            </div>
+
+            <div id="followGate" class="follow-gate" data-state="pending" role="status">
+              <span id="followGateIcon" class="follow-gate__icon" aria-hidden="true">2</span>
+              <div><strong id="followGateTitle">Follow check required</strong><p id="followGateText">Connect Instagram to verify that you follow @cybroatrix.</p></div>
+              <a id="followGateLink" class="button button--secondary" href="https://www.instagram.com/cybroatrix/" target="_blank" rel="noopener noreferrer">Follow @cybroatrix ↗</a>
+            </div>
+
+            <label class="field-label" for="liveUsername">Instagram username</label>
+            <div class="input-shell"><span aria-hidden="true">@</span><input id="liveUsername" autocomplete="off" autocapitalize="none" spellcheck="false" maxlength="31" placeholder="your_username"></div>
+            <p class="field-help">Only scan an account you own or are authorized to analyze.</p>
+            <button id="liveStartButton" class="button button--primary button--full" type="button" disabled>Start live analysis <span aria-hidden="true">→</span></button>
+          </div>
+
+          <div id="fileModePanel" class="mode-panel is-hidden" role="tabpanel" aria-labelledby="fileModeButton">
+            <label class="field-label" for="fileUsername">Profile label</label>
+            <div class="input-shell"><span aria-hidden="true">@</span><input id="fileUsername" autocomplete="off" autocapitalize="none" spellcheck="false" maxlength="31" placeholder="your_username"></div>
+
+            <label id="dropZone" class="drop-zone" for="exportFiles">
+              <span class="upload-icon" aria-hidden="true">⇧</span>
+              <strong>Select Instagram JSON files</strong>
+              <span>followers_*.json + following.json</span>
+              <input id="exportFiles" type="file" accept="application/json,.json" multiple>
+            </label>
+            <div id="fileSummary" class="file-summary" aria-live="polite">No files selected</div>
+            <button id="fileStartButton" class="button button--primary button--full" type="button" disabled>Analyze selected files <span aria-hidden="true">→</span></button>
+            <details class="help-details"><summary>Where do I get these files?</summary><p>Instagram Accounts Center → Your information and permissions → Export your information → Export to device. Choose JSON format and include Followers and following.</p></details>
+          </div>
+        </section>
+
+        <section id="progressPanel" class="panel progress-panel is-hidden" aria-labelledby="progressTitle">
+          <div class="progress-heading"><div><span class="section-number">02</span><h2 id="progressTitle">Analysis progress</h2></div><strong id="progressPercent">0%</strong></div>
+          <div class="progress-track" role="progressbar" aria-label="Analysis progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="progressBar"></span></div>
+          <p id="progressStatus" class="progress-status" aria-live="polite">Preparing…</p>
+          <div class="progress-meta"><span><small>Processed</small><strong id="processedCount">0</strong></span><span><small>Elapsed</small><strong id="elapsedTime">00:00</strong></span></div>
+          <ol class="steps">
+            <li id="stepConnect"><span>1</span><div><strong>Connect</strong><small>Verify session</small></div></li>
+            <li id="stepFollowers"><span>2</span><div><strong>Followers</strong><small>Read list</small></div></li>
+            <li id="stepFollowing"><span>3</span><div><strong>Following</strong><small>Read list</small></div></li>
+            <li id="stepCompare"><span>4</span><div><strong>Compare</strong><small>Build results</small></div></li>
+          </ol>
+          <button id="stopButton" class="button button--danger button--full" type="button">Stop analysis</button>
+        </section>
+
+        <div id="errorBox" class="alert alert--error is-hidden" role="alert"></div>
+      </aside>
+
+      <section class="results-column" aria-labelledby="resultsTitle">
+        <div id="emptyState" class="panel empty-state">
+          <div class="empty-visual" aria-hidden="true"><span>◎</span><i></i><i></i><i></i></div>
+          <span class="eyebrow">READY WHEN YOU ARE</span>
+          <h2>No analysis yet</h2>
+          <p>Choose live scan or import your official Instagram data. Your results will appear here.</p>
+        </div>
+
+        <div id="resultsPanel" class="is-hidden">
+          <div class="results-header">
+            <div><span id="resultEyebrow" class="eyebrow">ANALYSIS COMPLETE</span><h2 id="resultsTitle">Results for <span id="resultUsername">@username</span></h2><p id="resultMeta">Completed locally</p></div>
+            <div class="export-actions">
+              <button id="exportCsvButton" class="button button--secondary" type="button">Export CSV</button>
+              <button id="exportJsonButton" class="button button--secondary" type="button">Export JSON</button>
+            </div>
+          </div>
+
+          <div id="qualityBanner" class="quality-banner is-hidden" role="status">
+            <span id="qualityIcon" class="quality-icon" aria-hidden="true">✓</span>
+            <div><strong id="qualityTitle">Capture verified</strong><p id="qualityText">Instagram returned complete relationship lists.</p></div>
+          </div>
+
+          <div class="stat-grid">
+            <article class="stat-card"><span>Followers captured</span><strong id="followersStat">0</strong><small id="followersStatNote">Accounts following you</small></article>
+            <article class="stat-card"><span>Following captured</span><strong id="followingStat">0</strong><small id="followingStatNote">Accounts you follow</small></article>
+            <article class="stat-card stat-card--warning"><span>Don't follow back</span><strong id="notFollowingBackStat">0</strong><small>Following minus followers</small></article>
+            <article class="stat-card stat-card--accent"><span>Mutuals</span><strong id="mutualStat">0</strong><small>Two-way connections</small></article>
+          </div>
+
+          <section class="panel list-panel">
+            <div class="list-toolbar">
+              <div class="result-tabs" role="tablist" aria-label="Result category">
+                <button class="result-tab is-active" type="button" role="tab" aria-selected="true" data-category="notFollowingBack">Don't follow you <span id="notFollowingBackBadge">0</span></button>
+                <button class="result-tab" type="button" role="tab" aria-selected="false" data-category="notFollowedBack">You don't follow <span id="notFollowedBackBadge">0</span></button>
+                <button class="result-tab" type="button" role="tab" aria-selected="false" data-category="mutuals">Mutuals <span id="mutualBadge">0</span></button>
+              </div>
+              <div class="filter-row">
+                <label class="search-field"><span aria-hidden="true">⌕</span><span class="sr-only">Search usernames</span><input id="resultSearch" type="search" placeholder="Search username"></label>
+                <select id="resultSort" aria-label="Sort results"><option value="asc">A–Z</option><option value="desc">Z–A</option></select>
+              </div>
+            </div>
+            <div class="list-heading"><span id="categoryTitle">Accounts that don't follow you back</span><small id="visibleCount">0 results</small></div>
+            <div id="resultList" class="result-list"></div>
+            <button id="loadMoreButton" class="button button--secondary load-more is-hidden" type="button">Load more</button>
+          </section>
+
+          <section class="insight-grid" aria-label="Analysis insights">
+            <article class="mini-card"><span>Follow ratio</span><strong id="followRatio">—</strong><small>Followers ÷ following</small></article>
+            <article class="mini-card"><span>Mutual rate</span><strong id="mutualRate">—</strong><small>Mutuals ÷ following</small></article>
+            <article class="mini-card"><span>Analysis time</span><strong id="analysisTime">—</strong><small id="analysisMethod">Local processing</small></article>
+          </section>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <span class="footer-brand">whoisit</span>
+    <nav aria-label="Project links"><a id="footerGithub" href="https://github.com/itzstebin" target="_blank" rel="noopener noreferrer">Developer GitHub ↗</a><a id="footerDiscord" href="https://discord.gg/MkZFyksWr3" target="_blank" rel="noopener noreferrer">Discord ↗</a><a id="footerInstagram" href="https://www.instagram.com/cybroatrix/" target="_blank" rel="noopener noreferrer">Instagram ↗</a></nav>
+    <span>v2.2.0</span>
+  </footer>
+  <script src="config.js"></script>
+  <script src="core.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
